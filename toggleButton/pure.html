@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!-- The idea of make an invisible check box and then using an empty span and style it in the shape of pill.
+ The using CSS ::after to create a pseudo-element and style it to form the circle of the button.
+ We'll move this circle to the right of the pill when toggled on. Essentially, we'll just add
+ CSS property left: 50% to move it towards the left side.
+ Here comes the checkbox in the picture, we'll add an click event listener on the checkbox which will
+ then add the left property on the circle/pseudo-element.
+ Since, the checkbox is too small to be click-upon, we'll use a label with no text.
+ -->
+<html>
+  <head>
+    <title>Toggle Button</title>
+    <style>
+      .toggle-input {
+        /* Hiding the checkbox*/
+        border: 0;
+        clip: rect(0, 0, 0, 0);
+        height: 1px;
+        width: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        white-space: nowrap;
+      }
+
+      .toggle-btn {
+        /* constructing the pill that encapsulates the button */
+        display: inline-block;
+        cursor: pointer;
+        /* user-select: none; */
+        width: 8em;
+        height: 4em;
+        border-radius: 4em;
+        border: 10px solid #e8eae9;
+        /* padding: 4em; */
+        background: #fbfbfb;
+        transition: all 0.4s ease;
+      }
+
+      .toggle-btn::after {
+        /* Using CSS to create the button HTML element*/
+        position: relative;
+        left: 0;
+        display: block;
+        width: 50%;
+        height: 100%;
+        content: ''; /*having no content means nothing is displayed, thus for something to exist we used an empty string which means an empty string is displayed.*/
+        border-radius: 4em; /*having a border-radius will make the element's shadow take a ciruclar shape*/
+        background: #fbfbfb;
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1), 0 4px 0 rgba(0, 0, 0, 0.8);
+      }
+
+      .toggle-btn.toggle-btn-on::after {
+        left: 50%;
+      }
+
+      /* Turning the span green when it's on*/
+      .toggle-btn.toggle-btn-on {
+        background: #86d993;
+      }
+
+      .toggle-btn:active::after {
+        box-sizing: initial;
+        box-shadow: inset 0px 0px 0px 3px #9c9c9c;
+      }
+
+      /* When in on state, when click on move the button to slight left indicating that on clicking the button would move towards left i.e. off position*/
+      .toggle-btn.toggle-btn-on:active::after {
+        margin-left: -1.6em;
+      }
+      /*When pressed upon, the button will increase in length on the right size thus will take a pill shape. In case of active, we would have moved the button on slightly left side already, thus elongating on the right will fill up the empty space created, at the end this will give the look that the button expanded on the left.*/
+      .toggle-btn:active::after {
+        padding-right: 1.6em;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <label>
+        <!-- Since we make the checkbox so small that it is invisible, we'll leverage the great property of label elments i.e. click on the label cause a click on the checkbox. Further, by wrapping the input and span inside label make the label to take the same size as the largest element i.e. the span-->
+        <input type="checkbox" class="toggle-input" />
+        <span class="toggle-btn"></span>
+      </label>
+    </div>
+
+    <script>
+      const toggleInput = document.getElementsByClassName('toggle-input')[0];
+      toggleInput.addEventListener('click', (event) => {
+        document
+          .getElementsByClassName('toggle-btn')[0]
+          .classList.toggle('toggle-btn-on');
+      });
+    </script>
+  </body>
+</html>
